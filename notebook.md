@@ -192,5 +192,354 @@ C is case-sensitive, no char limit for identifiers. Convention is with underscor
 
 ### 3.1 `printf` Function
 
-*format string*
+*format string* -> display contents of a string inside the `"printf(string,...)"`
+
+> printf(*string*, *expr1*, *expr2* ...) ;
+
+Conversion specification -> `% | %d | %f`
+
+C compilers does not check numb of conversion specifications
+like:  
+
+    printf("%d %d \n", i); //output: 10 2125860096
+
+    printf("%d\n", i, j); //output: 10
+
+    printf("%f %d\n", i, x); //output 0.00000 -1610612736
+
+#### Conversion Specifications
+
+`%m.pX` | `%-m.pX` where  
+*X* def as conversion specifier, *m* & *p* as int constants w/ *m* & *p* optional.
+*m* def. as ***minimum field width*** where if the int is lower than m digits(e.g. %4d) then it would display ` 1234` where e is an emtpy space (right justified) but when exceeded then it would automatically change the value and putting it negative symbol (e.g. %-4d) would result in left justified (`123 `).  
+
+*p* def. as ***precision*** w/c depends on *X* where *X* can be
+ - d int base 10 where p = minimum num of digits to display (the length of the digit)
+ - e float exp format. length of p is default 6
+ - f float fixed decimal w/out exponent, p in f = p in e
+ - g float exp or fixed where p = max num of significant digits
+
+Example Code:
+    
+    #include <stdio.h>
+    int main(void) {
+        int i;
+        float x;
+        i = 40;
+        x = 839.21f;
+        printf("|%d|%5d|%-5d|%5.3d|\n", i, i, i, i);
+        printf("|%10.3f|%10.3e|%-10g|\n", x, x, x);
+        return 0;
+    }
+
+    output:
+    |40| 40|40 | 040|
+    | 839.210| 8.392e+02|839.21 |
+
+#### Escape Sequences
+`\n` => ***escape sequence***
+
+- Alert (bell)      `\a`
+- Backspace         `\b`
+- New line          `\n`
+- Horizontal tab    `\t`
+- Quotes\Dbl        `\"` | `\'`
+- Slash             `\\`
+
+### 3.2 `scanf` Function
+
+Read input in particular format like `printf` function.
+
+> scanf("%d%d%f%f", &i, &j, &x, &y);
+
+check if:
+- conversion specification = input variables
+- conversion is correct for the variables
+- `&` is crucial for scanf
+
+#### How `scanf` Works
+
+"pattern-matching"
+starting from the left of a string, it checks if there is an appropriate input data for each conversion specification, skips blank and spaces, stopping if the data does not belong to the input specifiers. 
+
+From my own understanding, its like it processes an input char by char (including whitespace), then if it finds a digit then it continues until it finds some condition that is not applicable to conversion specification (%d). Like in the example in the book:
+
+> ••1¤-20•••.3¤•••-4.0e3¤  
+> ssrsrrrsssrrssssrrrrrr
+>
+> where s = skipped, r = read
+
+Scanf skips the breakline character, reads the valid data. Another example is `1-20.3-4.0.e3\n` then using 
+
+> scanf("%d%d%f%f", &i, &j, &x, &y);
+
+scanf reads 1, then continues. It reads minus sign, which is not valid inside the integer (`1-`) then "return back" the `-`, read again now with another data. Like an array where it i=i-1 if some invalid data.
+
+#### Ordinary Characters in Format Strings
+
+***White-space characters***
+***Other characters***
+
+`scanf` ignores whitespace, checks the format string whether it matches or not, 
+if the other character did not match with format string, the `scanf` aborts and let the next call to be read by the function. For example, the format string is `"%d/%d"` where the input is `space5/space21` it ignores the space char, reads the 5 to be stored in `%d` then matches the  
+    
+
+#### Confusing `printf` with `scanf`
+
+dont use `&`in printf and be careful about format string (may as well not use it) in `scanf` function. Bad idea to use `\n` esp at the end as it advances to non-white-space, resulting in hanging.
+
+#### Adding Fractions
+
+### Q & A
+
+`%i` can be used for octal, decimal, or hexa
+- octal prefix 0 => 0256
+- hexa prefix 0x => 0x256
+
+use `%%` to print percentage sign.
+
+### Exercises
+
+### Programming Projects (I only did 1 & 2)
+
+## 4. Expressions
+
+C emphasizes on expressions. Arithmetic operators, Relational Operators, Logical Operators
+
+### 4.1 Arithmetic Operators
+
+perform add, subtrac, multiply and divide.
+
+| Unary     |Binary         |               |
+|--         |--             |--
+| + unary plus | additive   | multiplicative|
+| - unary minus | add       |   multiply |
+|           |   subtract    |  division |
+|           |               |  remainder|
+
+> i = +1;  //unary  
+> j = -1; //unary
+
+float = int + float
+truncate = int / int  
+remainder works w/ integer only  
+undefined behavior if 0 / x or x / 0  
+c89 -> negative operand leads to rounding up or down  
+c99 -> negative operand, division is truncated towards 0 whilst remainder is rounded up.
+
+##### Implementation Defined Behavior
+
+Behavior dependent on the version of the language, i.e. behavior on C89 and C99 are possibly different.
+
+#### Operator Precedence and Associativity
+
+| Heirarchy | | | |
+|-- |-- |-- |-- |
+| Highest | + | - | unary |
+|         | * | / | % |
+| Lowest  | + | - | binary 
+
+Operators on same level has same precedence. what if two or more operators? ***Associativity*** tackles this problem. 
+
+Operator can be associative in left or right meaning where it starts to group, left to right and right to left. Binary operators are left associative. Unary operators are right associative.
+
+> i - j - k  = (i - j) - k  ;  
+> i * j / k = (i * j) / k  ;  
+> \- \+ i  = \- (   \+  i   ) ;
+
+
+###### Program - Computing a UPC Check Digit
+
+
+### 4.2 Assignment Operators
+
+`=` is called an assignment operator.
+
+assignment chaining:
+> i = j = k = 0 ;
+
+right associative
+
+> i = ( j = ( k = 0 )) ;
+
+***Lvalue***
+
+> *lvalue* assignment operator *rvalue*  
+> ex: varName = "hello, world";
+
+values (the variable) must exist on the left of the assignment operator otherwise it would become invalid.
+
+#### Compound Assignment
+
+`i += 1 ;` = `i = i + 1 ;`
+
+### 4.3 Increment and Decrement Operators
+
+***increment*** ***decrement***  
+***prefix*** ***postfix***  
+
+what kind of scenario is pre-increment used?
+
+### 4.4 Expression Evaluation
+
+using parenthesis to understand complex expression with different operators and their associativity
+
+| Precedence | Name | Symbol(s)| Associativity|
+|--|--|--|--|
+| 1 | increment  decrement | ++  -- | left|
+| 2 | increment (prefix)  decrement (prefix)  unary plus  unary minus | ++ -- + - | right |
+| 3 | multiplicative | * / % | left |
+| 4 | additive | + - | left |
+| 5 | assignment | = *= /= %= += -= | right |
+
+
+> a = b += c++ - d + --e / -f
+  
+
+#### Order of Subexpression Evaluation
+
+expressions can be broken into subexpressions. Be careful about modifying inside an expression.
+
+avoid undefined behaviour (pp.65)
+
+### 4.5 Expression Statements
+
+expression as statement itself
+
+> i + 2 ;
+
+but tends to be unuseful
+
+### Q & A
+
+## 5. Selection Statements
+
+
+***selection statements***  
+***iteration statements***  
+***jump statements***  
+***compound statements***
+***null statement***
+
+C programming language rather evaluates true or false into 1 and 0 respectively. Meaning it returns 1 or 0 if logical value is true or false.
+
+
+### 5.1 Logical Expressions
+
+#### Relational Operators
+
+| Symbol | Meaning |
+| ----| ---- |
+| < | less than |
+| > | greater than |
+| <= | less than or equal to |
+| >= | greater than or equal to |
+
+Can be used to compare intergers and floating point numbers.
+
+#### Equality Operators
+
+| Symbol | Meaning |
+| ----| ---- |
+| == | equal to |
+| != | not equal to |
+
+left associative and
+lower heirarchy to relational operators
+
+> i < j == j < k  
+> ( i < j ) == ( j < k )
+
+#### Logical Operators
+
+| symbol | meaning |
+| -- | -- |
+| ! | logical negation |
+| && | logical and |
+| \| \| | logical or |
+
+side effect in logical expressions
+
+! operator same precedence as unary + and unary -  
+! operator is right associative
+
+
+### 5.2 The `if` statement
+
+> *if ( expression ) statement*
+
+#### Compound statements
+
+> *if ( expressions ) { statements }
+
+#### The `else` Clause
+
+> if ( expression ) statement else statement
+
+    if (i > j)
+        max = i;
+    else
+        max = j;
+
+can be nested like:
+
+    if (i > j)
+        if (i > k)
+            max = i;
+        else
+            max = j;
+    else
+        if (j > k)
+            max = j;
+        else
+            max = k;
+
+for more readability and avoid possible error in the compiler, use {} like:
+
+    if (i > j) {
+
+        if (i > k)
+            max = i;
+        else
+            max = j;
+    } else {
+        if (j > k)
+            max = j;
+        else
+            max = k;
+    }
+
+or 
+    
+    if (i > j) {
+        if (i > k) {
+            max = i;
+        } else {
+            max = j;
+        }
+    } else {
+        if (j > k) {
+            max = j;
+        } else {
+            max = k;
+        }
+    }
+
+> *if ( expressions ) { statements } else { statements }
+
+#### Cascaded `if` Statements
+
+#### Calculating a Broker's Commission
+##### broker.c 
+
+#### The "Dangling `else`" Problem
+
+else clause belongs to the nearest `if` supposedly that it has not already paired with `else`.
+
+#### Conditional Expressions
+
+***conditional operator*** consists of (? and :)
+
+**Conditional expression**
+> expr1 ? expr2 : expr3
 
