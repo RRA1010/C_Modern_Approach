@@ -48,10 +48,41 @@ Output:
 
 For each of the following pairs of scanf format strings, indicate whether or not the two  strings are equivalent. If they’re not, show how they can be distinguished.
 
-    (a) "%d"
-    versus " %d"
+    (a) "%d" versus " %d"
     (b) "%d-%d-%d" versus "%d -%d -%d"
-    (c) "%f"
-    versus "%f "
-    (d) "%f,%f"
-    versus "%f, %f"
+    (c) "%f" versus "%f "
+    (d) "%f,%f" versus "%f, %f"
+
+Answer:
+
+(a) is not equal because the `" %d"` accomodates whitespace of the input before the number whereas `"%d"` do not. (?)  
+(b) not equal, as the first format string does not number input with space on after it i.e. 19*s* compared to the other format string where if there are three inputs with spaces after it would be read by `scanf` function.  
+(c) same (?)
+(d) the same I think.
+
+## Q4
+
+Suppose that we call scanf as follows:  
+> scanf("%d%f%d", &i, &x, &j);  
+
+If the user enters
+> 10.3 5 6
+
+what will be the values of i, x, and j after the call? (Assume that i and j are int variables
+and x is a float variable.)
+
+Answer: (?)
+
+> 10 0.3 5
+
+## Q5
+
+> 12.3 45 .6
+
+## Q6
+
+Show how to modify the addfrac.c program of Section 3.2 so that the user is allowed to
+enter fractions that contain spaces before and after each / character.
+
+> scanf("%d /%d)
+
