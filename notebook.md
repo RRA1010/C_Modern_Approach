@@ -472,6 +472,8 @@ side effect in logical expressions
 
 > *if ( expressions ) { statements }
 
+expressions that are conditional
+
 #### The `else` Clause
 
 > if ( expression ) statement else statement
@@ -497,7 +499,6 @@ can be nested like:
 for more readability and avoid possible error in the compiler, use {} like:
 
     if (i > j) {
-
         if (i > k)
             max = i;
         else
@@ -529,6 +530,13 @@ or
 
 #### Cascaded `if` Statements
 
+proper:
+        if (expression) {
+            statements
+        } else {
+            statements
+        }
+
 #### Calculating a Broker's Commission
 ##### broker.c 
 
@@ -543,3 +551,58 @@ else clause belongs to the nearest `if` supposedly that it has not already paire
 **Conditional expression**
 > expr1 ? expr2 : expr3
 
+> return i > j ? i : j;
+
+can be used in `printf`
+
+writeable but not that easily readable
+
+    if (i > j)
+        printf("%d\n", i)
+    else
+        printf("%d\n", j)
+
+in condition expressions equivalent:
+
+    printf("%d\n", i > j ? i : j);
+
+#### Boolean Values in C89
+
+C language lack Boolean type (not including the library).
+C89 -> no boolean type
+
+workaround:
+
+    int flag;
+    flag = 0;
+    flag = 1;
+
+not readable
+
+instead for C89
+
+    #define TRUE 1
+    #define FALSE 0
+
+    flag = TRUE;
+    flag = FALSE;
+
+    if(flag == TRUE) is same as if(flag)
+    if(flag == FALSE) is same as if(!flag)
+
+    //macro
+
+    #define BOOL int
+    BOOL flag;
+    //typedef 7.5, enums 16.5
+
+#### Boolean Values in C99
+
+Boolean variable can be represented as `_Bool flag;`   
+
+`_Bool` can only be assigned as 0 or 1, non-zero defaults to 1.   
+
+I could also use <stdbool.h> header with data type bool.   
+example:
+
+### 5.3 The `switch` statement
