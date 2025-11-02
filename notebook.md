@@ -533,7 +533,9 @@ or
 proper:
         if (expression) {
             statements
-        } else {
+        } else if {
+            statements
+        } else if {
             statements
         }
 
@@ -543,6 +545,34 @@ proper:
 #### The "Dangling `else`" Problem
 
 else clause belongs to the nearest `if` supposedly that it has not already paired with `else`.
+
+example:   
+
+    if (expr)
+        if (expr)
+            statements;
+    else
+        statements;
+
+The ambiguity of where the `else` belongs to leads to being read by the compiler as:
+
+    if (expr)
+        if (expr)
+            statements;
+        else
+            statements;
+
+fix: use `{}` braces to group statements
+
+    if (expr) {
+        if (expr) {
+            statements;
+        }
+    } else {
+        statements;
+    }
+
+
 
 #### Conditional Expressions
 
@@ -602,7 +632,10 @@ Boolean variable can be represented as `_Bool flag;`
 
 `_Bool` can only be assigned as 0 or 1, non-zero defaults to 1.   
 
-I could also use <stdbool.h> header with data type bool.   
-example:
+I could also use `<stdbool.h>` header with data type bool for example:
+
+    #include <stdbool.h>
+
+    int main() { bool variable_identifier = 0 //which is false }
 
 ### 5.3 The `switch` statement
