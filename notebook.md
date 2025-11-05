@@ -9,7 +9,7 @@
 // C programs rely on three key language features:
 // directives
 // functions
-// statements
+// *statements*
 // @Ross: C is imperative
 
 
@@ -32,7 +32,7 @@ Directives
 def commands intended for the preprocessor
 `#include <stdio.h>`
 
-Statements   
+*statements*   
 def command to be executed when the progrum runs   
 `;` as terminator
 
@@ -65,7 +65,7 @@ Declaring variables and their data types. You could also combine or group the va
 > int main(void)
 > {
 >   declarations
->   statements
+>   *statements*
 > }
 
 **Assignment**
@@ -177,7 +177,7 @@ C is case-sensitive, no char limit for identifiers. Convention is with underscor
 `<literal>` : := `"Height: %d\n"`  
 `<punctuation>`: := `()` | `,` | `;`
 
-- *Statements can be divided* over any number of lines. Don't make it into a single line.
+- **statements* can be divided* over any number of lines. Don't make it into a single line.
 - *Space between tokens* w/c makes it easier to read
 - *Indenation*
 - *Blank lines*
@@ -402,7 +402,7 @@ expressions can be broken into subexpressions. Be careful about modifying inside
 
 avoid undefined behaviour (pp.65)
 
-### 4.5 Expression Statements
+### 4.5 Expression *statements*
 
 expression as statement itself
 
@@ -412,13 +412,13 @@ but tends to be unuseful
 
 ### Q & A
 
-## 5. Selection Statements
+## 5. Selection *statements*
 
 
-***selection statements***  
-***iteration statements***  
-***jump statements***  
-***compound statements***
+***selection *statements****  
+***iteration *statements****  
+***jump *statements****  
+***compound *statements****
 ***null statement***
 
 C programming language rather evaluates true or false into 1 and 0 respectively. Meaning it returns 1 or 0 if logical value is true or false.
@@ -468,9 +468,9 @@ side effect in logical expressions
 
 > *if ( expression ) statement*
 
-#### Compound statements
+#### Compound *statements*
 
-> *if ( expressions ) { statements }
+> *if ( expressions ) { *statements* }
 
 expressions that are conditional
 
@@ -526,17 +526,17 @@ or
         }
     }
 
-> *if ( expressions ) { statements } else { statements }
+> *if ( expressions ) { *statements* } else { *statements* }
 
-#### Cascaded `if` Statements
+#### Cascaded `if` *statements*
 
 proper:
         if (expression) {
-            statements
+            *statements*
         } else if {
-            statements
+            *statements*
         } else if {
-            statements
+            *statements*
         }
 
 #### Calculating a Broker's Commission
@@ -550,26 +550,26 @@ example:
 
     if (expr)
         if (expr)
-            statements;
+            *statements*;
     else
-        statements;
+        *statements*;
 
 The ambiguity of where the `else` belongs to leads to being read by the compiler as:
 
     if (expr)
         if (expr)
-            statements;
+            *statements*;
         else
-            statements;
+            *statements*;
 
-fix: use `{}` braces to group statements
+fix: use `{}` braces to group *statements*
 
     if (expr) {
         if (expr) {
-            statements;
+            *statements*;
         }
     } else {
-        statements;
+        *statements*;
     }
 
 
@@ -639,3 +639,36 @@ I could also use `<stdbool.h>` header with data type bool for example:
     int main() { bool variable_identifier = 0 //which is false }
 
 ### 5.3 The `switch` statement
+
+Structure of a `switch` statement:
+
+    switch (*expression*) {
+        case *const-expression*:
+        *statements*;
+        ...
+        case *const-expression*:
+        *statements*;
+        default: *statements*;
+    }
+
+Switch expressions require integer expression and const-expression are expressions using only constants and not variables or functions. Every case usually have a break after their statements and does not require braces on its scope. Order of case label does not matter. You can also group the case labels by preceding the statements.
+
+    switch (grade) {
+        case 4: case 3: case 2: case 1:
+            printf("Passing");
+            break;
+        case 0: printf("Failing); break;
+        default: printf("Invalid grade"); break;
+    }
+
+Range values are not allowed(C99). I can ommit the default statement.
+
+#### Role of `break` statement
+
+Without break, the control will flow from one case into the next.
+
+#### PROGRAM: Printing a Date in Legal Form ( date.c )
+
+refer to date.c code
+
+### Q & A
